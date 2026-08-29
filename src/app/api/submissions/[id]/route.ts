@@ -5,6 +5,13 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  if (request.cookies.get('admin_auth')?.value !== 'true') {
+    return NextResponse.json(
+      { success: false, error: 'No autorizado' },
+      { status: 401 }
+    );
+  }
+
   try {
     await initializeDatabase();
     const { id } = await params;

@@ -1,4 +1,5 @@
 import mysql from 'mysql2/promise';
+import { normalizeFullName, normalizeSentence } from './validation';
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
@@ -42,12 +43,12 @@ export async function submitDelegadoForm(data: DelegadoFormData) {
        (nombres, apellido_paterno, apellido_materno, ci, club_pertenece, cargo, tiempo_en_club)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
-        data.nombres,
-        data.apellido_paterno,
-        data.apellido_materno,
-        data.ci,
-        data.club_pertenece,
-        data.cargo,
+        normalizeFullName(data.nombres),
+        normalizeFullName(data.apellido_paterno),
+        normalizeFullName(data.apellido_materno),
+        data.ci.trim(),
+        normalizeSentence(data.club_pertenece),
+        normalizeSentence(data.cargo),
         data.tiempo_en_club,
       ]
     );
@@ -77,6 +78,47 @@ export async function getDelegadoById(id: number) {
       [id]
     );
     return rows;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function deleteAllDelegados() {
+  const connection = await pool.getConnection();
+  try {
+    const [result] = await connection.execute(`TRUNCATE TABLE delegados_submissions`);
+    return result;
+  } finally {
+    connection.release();
+  }
+}
+
+export async function findDuplicateDelegado(data: DelegadoFormData): Promise<boolean> {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.execute(
+      `SELECT * FROM delegados_submissions WHERE ci = ?`,
+      [data.ci.trim()]
+    );
+    const list = rows as DelegadoFormData[];
+    const norm = {
+      nombres: normalizeFullName(data.nombres),
+      apellido_paterno: normalizeFullName(data.apellido_paterno),
+      apellido_materno: normalizeFullName(data.apellido_materno),
+      ci: data.ci.trim(),
+      club_pertenece: normalizeSentence(data.club_pertenece),
+      cargo: normalizeSentence(data.cargo),
+      tiempo_en_club: data.tiempo_en_club,
+    };
+    return list.some((row) =>
+      row.nombres === norm.nombres &&
+      row.apellido_paterno === norm.apellido_paterno &&
+      row.apellido_materno === norm.apellido_materno &&
+      row.ci.trim() === norm.ci &&
+      row.club_pertenece === norm.club_pertenece &&
+      row.cargo === norm.cargo &&
+      row.tiempo_en_club === norm.tiempo_en_club
+    );
   } finally {
     connection.release();
   }

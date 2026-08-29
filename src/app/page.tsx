@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { DelegadoFormData } from '@/lib/db';
+import { onlyLetters, onlyDigits } from '@/lib/validation';
 
 export default function FormPage() {
   const [formData, setFormData] = useState<DelegadoFormData>({
@@ -27,13 +28,17 @@ export default function FormPage() {
       case 'apellido_materno':
         if (!value || (value as string).trim().length < 2) {
           newErrors[name] = 'Mínimo 2 caracteres';
+        } else if (!onlyLetters(String(value))) {
+          newErrors[name] = 'Solo se permiten letras';
         } else {
           delete newErrors[name];
         }
         break;
       case 'ci':
-        if (!value || (value as string).trim().length < 5) {
-          newErrors[name] = 'CI inválido';
+        if (!value || !onlyDigits(String(value))) {
+          newErrors[name] = 'Solo números';
+        } else if ((value as string).trim().length < 5 || (value as string).trim().length > 12) {
+          newErrors[name] = 'CI inválido (5 a 12 dígitos)';
         } else {
           delete newErrors[name];
         }
@@ -92,6 +97,16 @@ export default function FormPage() {
       }
     });
 
+    (['nombres', 'apellido_paterno', 'apellido_materno'] as (keyof DelegadoFormData)[]).forEach(field => {
+      if (formData[field] && !onlyLetters(String(formData[field]))) {
+        newErrors[field as string] = 'Solo se permiten letras';
+      }
+    });
+
+    if (formData.ci && !onlyDigits(formData.ci)) {
+      newErrors.ci = 'Solo se permiten números';
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setIsSubmitting(false);
@@ -132,16 +147,16 @@ export default function FormPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-6 sm:py-12 px-3 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900">Asociación de Básquetbol Cochabamba</h1>
-          <p className="mt-2 text-gray-600">Registro de Delegados de Clubes</p>
+        <div className="text-center mb-6 sm:mb-10">
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Asociación de Básquetbol Cochabamba</h1>
+          <p className="mt-2 text-sm sm:text-base text-gray-600">Registro de Delegados de Clubes</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6" noValidate>
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-4 sm:p-6" noValidate>
           {/* Status Messages */}
           {submitStatus === 'success' && (
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-800">
@@ -163,6 +178,7 @@ export default function FormPage() {
                 name="nombres"
                 value={formData.nombres}
                 onChange={handleChange}
+                maxLength={100}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.nombres ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -178,6 +194,7 @@ export default function FormPage() {
                 name="apellido_paterno"
                 value={formData.apellido_paterno}
                 onChange={handleChange}
+                maxLength={100}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.apellido_paterno ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -193,6 +210,7 @@ export default function FormPage() {
                 name="apellido_materno"
                 value={formData.apellido_materno}
                 onChange={handleChange}
+                maxLength={100}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.apellido_materno ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -212,6 +230,8 @@ export default function FormPage() {
                 name="ci"
                 value={formData.ci}
                 onChange={handleChange}
+                inputMode="numeric"
+                maxLength={12}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.ci ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -227,6 +247,7 @@ export default function FormPage() {
                 name="club_pertenece"
                 value={formData.club_pertenece}
                 onChange={handleChange}
+                maxLength={200}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.club_pertenece ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -242,6 +263,7 @@ export default function FormPage() {
                 name="cargo"
                 value={formData.cargo}
                 onChange={handleChange}
+                maxLength={100}
                 className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   errors.cargo ? 'border-red-500' : 'border-gray-300'
                 }`}

@@ -3,6 +3,13 @@ import { getAllDelegados, initializeDatabase, DelegadoSubmission } from '@/lib/d
 import * as XLSX from 'xlsx';
 
 export async function GET(request: NextRequest) {
+  if (request.cookies.get('admin_auth')?.value !== 'true') {
+    return NextResponse.json(
+      { success: false, error: 'No autorizado' },
+      { status: 401 }
+    );
+  }
+
   try {
     await initializeDatabase();
     const submissions = await getAllDelegados();
