@@ -12,7 +12,7 @@ export default function FormPage() {
     ci: '',
     club_pertenece: '',
     cargo: '',
-    tiempo_en_club: 0,
+    tiempo_en_club: '',
     telefono: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -59,8 +59,8 @@ export default function FormPage() {
         }
         break;
       case 'tiempo_en_club':
-        if (value === undefined || value === null || (value as number) < 0) {
-          newErrors[name] = 'Tiempo en el club requerido';
+        if (!value || (value as string).trim().length < 5) {
+          newErrors[name] = 'Describe tu tiempo en el club (mín. 5 caracteres)';
         } else {
           delete newErrors[name];
         }
@@ -82,9 +82,9 @@ export default function FormPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const newData = { ...formData, [name]: name === 'tiempo_en_club' ? parseInt(value) || 0 : value };
+    const newData = { ...formData, [name]: value };
     setFormData(newData);
-    validateField(name as keyof DelegadoFormData, newData[name as keyof DelegadoFormData]);
+    validateField(name as keyof DelegadoFormData, value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -141,7 +141,7 @@ export default function FormPage() {
           ci: '',
           club_pertenece: '',
           cargo: '',
-          tiempo_en_club: 0,
+          tiempo_en_club: '',
           telefono: '',
         });
       } else {
@@ -189,7 +189,7 @@ export default function FormPage() {
                 value={formData.nombres}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.nombres ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Juan Carlos"
@@ -205,7 +205,7 @@ export default function FormPage() {
                 value={formData.apellido_paterno}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.apellido_paterno ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Pérez"
@@ -221,7 +221,7 @@ export default function FormPage() {
                 value={formData.apellido_materno}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.apellido_materno ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="García"
@@ -242,7 +242,7 @@ export default function FormPage() {
                 onChange={handleChange}
                 inputMode="numeric"
                 maxLength={12}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.ci ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="1234567"
@@ -258,7 +258,7 @@ export default function FormPage() {
                 value={formData.club_pertenece}
                 onChange={handleChange}
                 maxLength={200}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.club_pertenece ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Ej: Club Universitario, Club San Simón"
@@ -274,7 +274,7 @@ export default function FormPage() {
                 value={formData.cargo}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                   errors.cargo ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Ej: Presidente, Vicepresidente, Delegado"
@@ -286,18 +286,16 @@ export default function FormPage() {
 
           {/* Time in club */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Tiempo en el Club (años) *</label>
-            <input
-              type="number"
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tiempo en el Club *</label>
+            <textarea
               name="tiempo_en_club"
               value={formData.tiempo_en_club}
               onChange={handleChange}
-              min="0"
-              max="100"
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              rows={3}
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                 errors.tiempo_en_club ? 'border-red-500' : 'border-gray-300'
               }`}
-              placeholder="5"
+              placeholder="Ej: 5 años como delegado, 2 años en directiva, experiencia en torneos nacionales, etc."
               required
             />
             {errors.tiempo_en_club && <p className="mt-1 text-sm text-red-600">{errors.tiempo_en_club}</p>}
@@ -311,7 +309,7 @@ export default function FormPage() {
               name="telefono"
               value={formData.telefono}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
                 errors.telefono ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Ej: 71234567 o 59171234567"

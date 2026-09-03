@@ -74,11 +74,11 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Validate tiempo_en_club
-    const tiempo = Number(body.tiempo_en_club);
-    if (!Number.isInteger(tiempo) || tiempo < 0 || tiempo > 100) {
+    // Validate tiempo_en_club (now text description)
+    const tiempo = String(body.tiempo_en_club || '').trim();
+    if (tiempo.length < 5 || tiempo.length > 500) {
       return NextResponse.json(
-        { success: false, error: 'Tiempo en el club inválido (0 a 100 años)' },
+        { success: false, error: 'Describe tu tiempo en el club (mín. 5 caracteres, máx. 500)' },
         { status: 400 }
       );
     }

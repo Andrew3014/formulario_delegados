@@ -24,7 +24,7 @@ export async function initializeDatabase() {
         ci VARCHAR(20) NOT NULL,
         club_pertenece VARCHAR(200) NOT NULL,
         cargo VARCHAR(100) NOT NULL,
-        tiempo_en_club INT NOT NULL,
+        tiempo_en_club VARCHAR(500) NOT NULL,
         telefono VARCHAR(14) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -133,7 +133,7 @@ export interface DelegadoFormData {
   ci: string;
   club_pertenece: string;
   cargo: string;
-  tiempo_en_club: number;
+  tiempo_en_club: string;
   telefono: string;
 }
 
