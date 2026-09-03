@@ -189,7 +189,7 @@ export default function FormPage() {
                 value={formData.nombres}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.nombres ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Juan Carlos"
@@ -205,7 +205,7 @@ export default function FormPage() {
                 value={formData.apellido_paterno}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.apellido_paterno ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Pérez"
@@ -221,7 +221,7 @@ export default function FormPage() {
                 value={formData.apellido_materno}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.apellido_materno ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="García"
@@ -242,7 +242,7 @@ export default function FormPage() {
                 onChange={handleChange}
                 inputMode="numeric"
                 maxLength={12}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.ci ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="1234567"
@@ -258,7 +258,7 @@ export default function FormPage() {
                 value={formData.club_pertenece}
                 onChange={handleChange}
                 maxLength={200}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.club_pertenece ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Ej: Club Universitario, Club San Simón"
@@ -274,7 +274,7 @@ export default function FormPage() {
                 value={formData.cargo}
                 onChange={handleChange}
                 maxLength={100}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                   errors.cargo ? 'border-red-500' : 'border-gray-300'
                 }`}
                 placeholder="Ej: Presidente, Vicepresidente, Delegado"
@@ -292,7 +292,7 @@ export default function FormPage() {
               value={formData.tiempo_en_club}
               onChange={handleChange}
               rows={3}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                 errors.tiempo_en_club ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Ej: 5 años como delegado, 2 años en directiva, experiencia en torneos nacionales, etc."
@@ -309,7 +309,7 @@ export default function FormPage() {
               name="telefono"
               value={formData.telefono}
               onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-gray-500 text-gray-900 ${
                 errors.telefono ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Ej: 71234567 o 59171234567"
