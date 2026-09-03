@@ -161,6 +161,7 @@ export default function AdminDashboardPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Club</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo en Club</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha Registro</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                 </tr>
@@ -178,6 +179,7 @@ export default function AdminDashboardPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{submission.club_pertenece}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{submission.cargo}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{submission.tiempo_en_club} años</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{submission.telefono}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{formatDate(submission.created_at)}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600 hover:text-blue-900">
                       Ver detalles
@@ -186,7 +188,7 @@ export default function AdminDashboardPage() {
                 ))}
                 {submissions.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="px-6 py-12 text-center text-gray-500">
+                    <td colSpan={9} className="px-6 py-12 text-center text-gray-500">
                       No hay registros aún
                     </td>
                   </tr>
@@ -227,6 +229,10 @@ export default function AdminDashboardPage() {
               <div>
                 <label className="block text-xs font-medium text-gray-500 uppercase">Cargo</label>
                 <p className="text-gray-900">{detailData.cargo}</p>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 uppercase">Teléfono</label>
+                <p className="text-gray-900">{detailData.telefono}</p>
               </div>
               <div className="pt-4 border-t border-gray-200">
                 <label className="block text-xs font-medium text-gray-500 uppercase">Fecha de Registro</label>

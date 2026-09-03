@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     
     // Validate required fields
     const requiredFields: (keyof DelegadoFormData)[] = [
-      'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'club_pertenece', 'cargo', 'tiempo_en_club'
+      'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'club_pertenece', 'cargo', 'tiempo_en_club', 'telefono'
     ];
     
     for (const field of requiredFields) {
@@ -45,6 +45,15 @@ export async function POST(request: NextRequest) {
     if (!/^\d+$/.test(ci) || ci.length < 5 || ci.length > 12) {
       return NextResponse.json(
         { success: false, error: 'CI debe contener solo números (5 a 12 dígitos)' },
+        { status: 400 }
+      );
+    }
+
+    // Validate telefono: only digits, min 8, max 14
+    const telefonoDigits = body.telefono.replace(/\D/g, '');
+    if (telefonoDigits.length < 8 || telefonoDigits.length > 14) {
+      return NextResponse.json(
+        { success: false, error: 'Teléfono debe tener entre 8 y 14 dígitos' },
         { status: 400 }
       );
     }

@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
       'Club': s.club_pertenece,
       'Cargo': s.cargo,
       'Tiempo en el Club (años)': s.tiempo_en_club,
+      'Teléfono': s.telefono,
       'Fecha de Registro': new Date(s.created_at).toLocaleDateString('es-BO'),
     }));
     
@@ -41,6 +42,7 @@ export async function GET(request: NextRequest) {
       { wch: 25 },  // Club
       { wch: 25 },  // Cargo
       { wch: 22 },  // Tiempo en el Club
+      { wch: 18 },  // Teléfono
       { wch: 18 },  // Fecha de Registro
     ];
     ws['!cols'] = colWidths;

@@ -25,6 +25,7 @@ export async function initializeDatabase() {
         club_pertenece VARCHAR(200) NOT NULL,
         cargo VARCHAR(100) NOT NULL,
         tiempo_en_club INT NOT NULL,
+        telefono VARCHAR(14) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
@@ -40,8 +41,8 @@ export async function submitDelegadoForm(data: DelegadoFormData) {
   try {
     const [result] = await connection.execute(
       `INSERT INTO delegados_submissions 
-       (nombres, apellido_paterno, apellido_materno, ci, club_pertenece, cargo, tiempo_en_club)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+       (nombres, apellido_paterno, apellido_materno, ci, club_pertenece, cargo, tiempo_en_club, telefono)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         normalizeFullName(data.nombres),
         normalizeFullName(data.apellido_paterno),
@@ -50,6 +51,7 @@ export async function submitDelegadoForm(data: DelegadoFormData) {
         normalizeSentence(data.club_pertenece),
         normalizeSentence(data.cargo),
         data.tiempo_en_club,
+        data.telefono,
       ]
     );
     return result;
@@ -132,6 +134,7 @@ export interface DelegadoFormData {
   club_pertenece: string;
   cargo: string;
   tiempo_en_club: number;
+  telefono: string;
 }
 
 export interface DelegadoSubmission extends DelegadoFormData {

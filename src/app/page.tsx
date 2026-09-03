@@ -13,6 +13,7 @@ export default function FormPage() {
     club_pertenece: '',
     cargo: '',
     tiempo_en_club: 0,
+    telefono: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,6 +65,14 @@ export default function FormPage() {
           delete newErrors[name];
         }
         break;
+      case 'telefono':
+        const digits = (value as string).replace(/\D/g, '');
+        if (!value || digits.length < 8 || digits.length > 14) {
+          newErrors[name] = 'Teléfono: 8-14 dígitos';
+        } else {
+          delete newErrors[name];
+        }
+        break;
       default:
         delete newErrors[name];
     }
@@ -87,7 +96,7 @@ export default function FormPage() {
     // Final validation
     const newErrors: Record<string, string> = {};
     const requiredFields: (keyof DelegadoFormData)[] = [
-      'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'club_pertenece', 'cargo', 'tiempo_en_club'
+      'nombres', 'apellido_paterno', 'apellido_materno', 'ci', 'club_pertenece', 'cargo', 'tiempo_en_club', 'telefono'
     ];
     
     requiredFields.forEach(field => {
@@ -133,6 +142,7 @@ export default function FormPage() {
           club_pertenece: '',
           cargo: '',
           tiempo_en_club: 0,
+          telefono: '',
         });
       } else {
         setSubmitStatus('error');
@@ -291,6 +301,25 @@ export default function FormPage() {
               required
             />
             {errors.tiempo_en_club && <p className="mt-1 text-sm text-red-600">{errors.tiempo_en_club}</p>}
+          </div>
+
+          {/* Telefono */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
+            <input
+              type="tel"
+              name="telefono"
+              value={formData.telefono}
+              onChange={handleChange}
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.telefono ? 'border-red-500' : 'border-gray-300'
+              }`}
+              placeholder="Ej: 71234567 o 59171234567"
+              maxLength={14}
+              required
+            />
+            {errors.telefono && <p className="mt-1 text-sm text-red-600">{errors.telefono}</p>}
+            <p className="mt-1 text-xs text-gray-500">Solo números, entre 8 y 14 dígitos</p>
           </div>
 
           {/* Submit Button */}
